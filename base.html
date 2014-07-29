@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<!-- Ben Athiwaratkun (c) 2014 -->
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Home Page - Ben Athiwaratkun</title>
+		<script type="text/javascript" src="../d3/d3.v3.js"></script>
+		<style type="text/css">
+            /* TODO - style rules */
+            
+		</style>
+	</head>
+	<body>
+		<script type="text/javascript">
+
+			//Width and height
+			var w = 1000;
+			var h = 800;
+
+			// Refactor into JSON
+			var dataset = {
+				nodes: [
+					{ name: "Ben Athiwaratkun" },
+					{ name: "IPhO" },
+					{ name: "Williams College" },
+					{ name: "Exeter Group" },
+					{ name: "Edward" },
+					{ name: "Felicity" },
+					{ name: "George" },
+					{ name: "Hannah" },
+					{ name: "Iris" },
+					{ name: "Jerry" }
+				],
+				edges: [
+					{ source: 0, target: 1 },
+					{ source: 0, target: 2 },
+					{ source: 0, target: 3 },
+					{ source: 0, target: 4 },
+					{ source: 1, target: 5 },
+					{ source: 2, target: 5 },
+					{ source: 2, target: 5 },
+					{ source: 3, target: 4 },
+					{ source: 5, target: 8 },
+					{ source: 5, target: 9 },
+					{ source: 6, target: 7 },
+					{ source: 7, target: 8 },
+					{ source: 8, target: 9 }
+				]
+			};
+
+			//Initialize a default force layout, using the nodes and edges in dataset
+			var force = d3.layout.force()
+								 .nodes(dataset.nodes) // add nodes to the force layout
+								 .links(dataset.edges)  // add edges to the force layout
+								 .size([w, h])          // add size of the canvas to the force layout
+								 .linkDistance([50])    // add distance of edges
+								 /*.linkDistance(function (d){
+                                    return [(d.value)]
+                                    // we can probably parse it to int
+                                 })*/
+                                 .charge([-100])
+								 .start();
+// the distance is like a natural distance of a spring
+// the charge ~ the repulsion
+// 
+			var colors = d3.scale.category10();
+
+            /* initilization - create the SVG object which displays the circles
+            on the canvas.
+            
+            */
+            
+			//Create SVG element
+			var svg = d3.select("body")
+						.append("svg")
+						.attr("width", w)
+						.attr("height", h);
+			
+			//Create edges as lines
+			var edges = svg.selectAll("line")
+				.data(dataset.edges)
+				.enter()
+				.append("line")
+				.style("stroke", "#ccc")
+				.style("stroke-width", 1);
+			
+			//Create nodes as circles
+			var nodes = svg.selectAll("circle")
+				.data(dataset.nodes)
+				.enter()
+				.append("circle")
+				.attr("r", 10)
+				.style("fill", function(d, i) {
+					return colors(i);
+				})
+				.call(force.drag);
+            // this line .call(force.drag) is important. -> allows user to drag around the nodes
+            // then we specify the interaction when the simulation 'ticks'
+            // 
+			
+			//Every time the simulation "ticks", this will be called
+			force.on("tick", function() {
+
+				edges.attr("x1", function(d) { return d.source.x; })
+					 .attr("y1", function(d) { return d.source.y; })
+					 .attr("x2", function(d) { return d.target.x; })
+					 .attr("y2", function(d) { return d.target.y; });
+			
+				nodes.attr("cx", function(d) { return d.x; })
+					 .attr("cy", function(d) { return d.y; });
+	
+			});
+// the on tick function adjusts the positions of the edges and the nodes on SVG
+// according to the dynamic of the force object. (d.source.x , ... )
+
+		</script>
+	</body>
+</html>
