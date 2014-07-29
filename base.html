@@ -17,7 +17,7 @@
 			var w = 1000;
 			var h = 650;
 
-			// Refactor into JSON
+			// TODO - Refactor into JSON
 			var dataset = {
 				nodes: [
 					{ name: "Ben Athiwaratkun" },
@@ -35,18 +35,18 @@
                     { name: "Joe" }
 				],
 				edges: [
-					{ source: 0, target: 1 },
-					{ source: 0, target: 2 },
-					{ source: 0, target: 3 },
-					{ source: 1, target: 4 },
-					{ source: 1, target: 5 },
-					{ source: 2, target: 6 },
-					{ source: 2, target: 7 },
-					{ source: 2, target: 8 },
-					{ source: 3, target: 9 },
-					{ source: 3, target: 10 },
-					{ source: 3, target: 11 },
-					{ source: 3, target: 12 }				]
+					{ source: 0, target: 1 , direct:1},
+					{ source: 0, target: 2 ,direct:1},
+					{ source: 0, target: 3 ,direct:1},
+					{ source: 1, target: 4 ,direct:1},
+					{ source: 1, target: 5 ,direct:1},
+					{ source: 2, target: 6 ,direct:1},
+					{ source: 2, target: 7 ,direct:1},
+					{ source: 2, target: 8 ,direct:1},
+					{ source: 3, target: 9 ,direct:1},
+					{ source: 3, target: 10 ,direct:1},
+					{ source: 3, target: 11 ,direct:1},
+					{ source: 3, target: 12 ,direct:1}				]
 			};
 
 			//Initialize a default force layout, using the nodes and edges in dataset
