@@ -14,7 +14,7 @@
 		<script type="text/javascript">
 
 			//Width and height
-			var w = 1250;
+			var w = 1000;
 			var h = 650;
 
 			// Refactor into JSON
@@ -94,11 +94,18 @@
 				.style("fill", function(d, i) {
 					return colors(i);
 				})
+                .style("fill-opacity", 0.3)
 				.call(force.drag);
             // this line .call(force.drag) is important. -> allows user to drag around the nodes
             // then we specify the interaction when the simulation 'ticks'
             // 
 			
+            
+            /**** Ben Athiwaratkun *****/
+            /** Adding Text  **/
+            
+            
+            
 			//Every time the simulation "ticks", this will be called
 			force.on("tick", function() {
 
