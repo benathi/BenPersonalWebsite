@@ -103,6 +103,10 @@
             
             /**** Ben Athiwaratkun *****/
             /** Adding Text  **/
+            var text = svg.selectAll("text")
+            .data(dataset.nodes)
+            .enter()
+            .append("text");
             
             
             
