@@ -1,140 +1,232 @@
 <!DOCTYPE html>
 <!-- Ben Athiwaratkun (c) 2014 -->
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>Home Page - Ben Athiwaratkun</title>
-		<script type="text/javascript" src="../d3/d3.v3.js"></script>
-		<style type="text/css">
-            /* TODO - style rules */
-            
-		</style>
-	</head>
-	<body>
-		<script type="text/javascript">
 
-			//Width and height
-			var w = 1000;
-			var h = 650;
+<head>
+    <meta charset="utf-8">
+    <title>Home Page - Ben Athiwaratkun</title>
+    <script type="text/javascript" src="../d3/d3.v3.js"></script>
+    <style type="text/css">
+        /* TODO - style rules */
+    </style>
+</head>
 
-			// TODO - Refactor into JSON
-			var dataset = {
-				nodes: [
-					{ name: "Ben Athiwaratkun" },
-					{ name: "IPhO" },
-					{ name: "Williams College" },
-					{ name: "Exeter Group" },
-					{ name: "Edward" },
-					{ name: "Felicity" },
-					{ name: "George" },
-					{ name: "Hannah" },
-					{ name: "Iris" },
-					{ name: "Jerry" },
-                    { name: "Jim" },
-                    { name: "Joe" },
-                    { name: "Joe" }
-				],
-				edges: [
-					{ source: 0, target: 1 , direct:1},
-					{ source: 0, target: 2 ,direct:1},
-					{ source: 0, target: 3 ,direct:1},
-					{ source: 1, target: 4 ,direct:1},
-					{ source: 1, target: 5 ,direct:1},
-					{ source: 2, target: 6 ,direct:1},
-					{ source: 2, target: 7 ,direct:1},
-					{ source: 2, target: 8 ,direct:1},
-					{ source: 3, target: 9 ,direct:1},
-					{ source: 3, target: 10 ,direct:1},
-					{ source: 3, target: 11 ,direct:1},
-					{ source: 3, target: 12 ,direct:1}				]
-			};
+<body>
+    <script type="text/javascript">
+        //Width and height
+        var w = 1000;
+        var h = 650;
 
-			//Initialize a default force layout, using the nodes and edges in dataset
-			var force = d3.layout.force()
+         // TODO - Refactor into JSON
+        var dataset = {
+            nodes: [
+                {
+                    name: "Ben Athiwaratkun"
+                },
+                {
+                    name: "IPhO"
+                },
+                {
+                    name: "Williams College"
+                },
+                {
+                    name: "Exeter Group"
+                },
+                {
+                    name: "Edward"
+                },
+                {
+                    name: "Felicity"
+                },
+                {
+                    name: "George"
+                },
+                {
+                    name: "Hannah"
+                },
+                {
+                    name: "Iris"
+                },
+                {
+                    name: "Jerry"
+                },
+                {
+                    name: "Jim"
+                },
+                {
+                    name: "Joe"
+                },
+                {
+                    name: "Joe"
+                }
+    ],
+            edges: [
+                {
+                    source: 0,
+                    target: 1,
+                    direct: 1
+                },
+                {
+                    source: 0,
+                    target: 2,
+                    direct: 1
+                },
+                {
+                    source: 0,
+                    target: 3,
+                    direct: 1
+                },
+                {
+                    source: 1,
+                    target: 4,
+                    direct: 1
+                },
+                {
+                    source: 1,
+                    target: 5,
+                    direct: 1
+                },
+                {
+                    source: 2,
+                    target: 6,
+                    direct: 1
+                },
+                {
+                    source: 2,
+                    target: 7,
+                    direct: 1
+                },
+                {
+                    source: 2,
+                    target: 8,
+                    direct: 1
+                },
+                {
+                    source: 3,
+                    target: 9,
+                    direct: 1
+                },
+                {
+                    source: 3,
+                    target: 10,
+                    direct: 1
+                },
+                {
+                    source: 3,
+                    target: 11,
+                    direct: 1
+                },
+                {
+                    source: 3,
+                    target: 12,
+                    direct: 1
+                }]
+        };
+
+         //Initialize a default force layout, using the nodes and edges in dataset
+        var force = d3.layout.force()
             .nodes(dataset.nodes) // add nodes to the force layout
-            .links(dataset.edges)  // add edges to the force layout
-								 .size([w, h])          // add size of the canvas to the force layout
-								 .linkDistance([250])    // add distance of edges
-								 /*.linkDistance(function (d){
+            .links(dataset.edges) // add edges to the force layout
+            .size([w, h]) // add size of the canvas to the force layout
+            .linkDistance([250]) // add distance of edges
+            /*.linkDistance(function (d){
                                     return [(d.value)]
                                     // we can probably parse it to int
                                  })*/
-                                 .charge([-2000])
-								 .start();
-// the distance is like a natural distance of a spring
-// the charge ~ the repulsion
-// 
-			var colors = d3.scale.category10();
+            .charge([-2000])
+            .start();
+         // the distance is like a natural distance of a spring
+         // the charge ~ the repulsion
+         // 
+        var colors = d3.scale.category10();
 
-            /* initilization - create the SVG object which displays the circles
+        /* initilization - create the SVG object which displays the circles
             on the canvas.
             
             */
-            
-			//Create SVG element
-			var svg = d3.select("body")
-						.append("svg")
-						.attr("width", w)
-						.attr("height", h);
-			
-			//Create edges as lines
-			var edges = svg.selectAll("line")
-				.data(dataset.edges)
-				.enter()
-				.append("line")
-				.style("stroke", "#ccc")
-				.style("stroke-width", 1);
-			
-            
-            /**** Ben Athiwaratkun *****/
-            /** Adding Text  **/
-            var texts = svg.selectAll("text")
+
+         //Create SVG element
+        var svg = d3.select("body")
+            .append("svg")
+            .attr("width", w)
+            .attr("height", h);
+
+         //Create edges as lines
+        var edges = svg.selectAll("line")
+            .data(dataset.edges)
+            .enter()
+            .append("line")
+            .style("stroke", "#ccc")
+            .style("stroke-width", 1);
+
+
+        /**** Ben Athiwaratkun *****/
+        /** Adding Text  **/
+        var texts = svg.selectAll("text")
             .data(dataset.nodes)
             .enter()
             .append("text")
-            .text(function(d) {return d.name;})
+            .text(function (d) {
+                return d.name;
+            })
             .attr("text-anchor", "middle");
-            //.attr("font-family", "sans-serif")
-            //.attr("font-size", "20px")
-            //.attr("fill", "red")
-            
-            
-			//Create nodes as circles
-			var nodes = svg.selectAll("circle")
-				.data(dataset.nodes)
-				.enter()
-				.append("circle")
-				.attr("r", 70)
-				.style("fill", function(d, i) {
-					return colors(i);
-				})
-                .style("fill-opacity", 0.3)
-				.call(force.drag);
-            // this line .call(force.drag) is important. -> allows user to drag around the nodes
-            // then we specify the interaction when the simulation 'ticks'
-            // 
-			
-            
+         //.attr("font-family", "sans-serif")
+         //.attr("font-size", "20px")
+         //.attr("fill", "red")
 
-            
-			//Every time the simulation "ticks", this will be called
-			force.on("tick", function() {
 
-				edges.attr("x1", function(d) { return d.source.x; })
-					 .attr("y1", function(d) { return d.source.y; })
-					 .attr("x2", function(d) { return d.target.x; })
-					 .attr("y2", function(d) { return d.target.y; });
-			
-				nodes.attr("cx", function(d) { return d.x; })
-					 .attr("cy", function(d) { return d.y; });
-	
-                texts
-                .attr("x", function(d) {return d.x;} )
-                .attr("y", function(d) {return d.y;}); 
-			});
-// the on tick function adjusts the positions of the edges and the nodes on SVG
-// according to the dynamic of the force object. (d.source.x , ... )
+         //Create nodes as circles
+        var nodes = svg.selectAll("circle")
+            .data(dataset.nodes)
+            .enter()
+            .append("circle")
+            .attr("r", 70)
+            .style("fill", function (d, i) {
+                return colors(i);
+            })
+            .style("fill-opacity", 0.3)
+            .call(force.drag);
+         // this line .call(force.drag) is important. -> allows user to drag around the nodes
+         // then we specify the interaction when the simulation 'ticks'
+         // 
 
-		</script>
-	</body>
+
+
+
+         //Every time the simulation "ticks", this will be called
+        force.on("tick", function () {
+
+            edges.attr("x1", function (d) {
+                return d.source.x;
+            })
+                .attr("y1", function (d) {
+                    return d.source.y;
+                })
+                .attr("x2", function (d) {
+                    return d.target.x;
+                })
+                .attr("y2", function (d) {
+                    return d.target.y;
+                });
+
+            nodes.attr("cx", function (d) {
+                return d.x;
+            })
+                .attr("cy", function (d) {
+                    return d.y;
+                });
+
+            texts
+                .attr("x", function (d) {
+                    return d.x;
+                })
+                .attr("y", function (d) {
+                    return d.y;
+                });
+        });
+         // the on tick function adjusts the positions of the edges and the nodes on SVG
+         // according to the dynamic of the force object. (d.source.x , ... )
+    </script>
+</body>
+
 </html>
