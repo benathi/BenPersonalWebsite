@@ -51,8 +51,8 @@
 
 			//Initialize a default force layout, using the nodes and edges in dataset
 			var force = d3.layout.force()
-								 .nodes(dataset.nodes) // add nodes to the force layout
-								 .links(dataset.edges)  // add edges to the force layout
+            .nodes(dataset.nodes) // add nodes to the force layout
+            .links(dataset.edges)  // add edges to the force layout
 								 .size([w, h])          // add size of the canvas to the force layout
 								 .linkDistance([250])    // add distance of edges
 								 /*.linkDistance(function (d){
@@ -85,6 +85,20 @@
 				.style("stroke", "#ccc")
 				.style("stroke-width", 1);
 			
+            
+            /**** Ben Athiwaratkun *****/
+            /** Adding Text  **/
+            var texts = svg.selectAll("text")
+            .data(dataset.nodes)
+            .enter()
+            .append("text")
+            .text(function(d) {return d.name;})
+            .attr("text-anchor", "middle");
+            //.attr("font-family", "sans-serif")
+            //.attr("font-size", "20px")
+            //.attr("fill", "red")
+            
+            
 			//Create nodes as circles
 			var nodes = svg.selectAll("circle")
 				.data(dataset.nodes)
@@ -101,14 +115,7 @@
             // 
 			
             
-            /**** Ben Athiwaratkun *****/
-            /** Adding Text  **/
-            var text = svg.selectAll("text")
-            .data(dataset.nodes)
-            .enter()
-            .append("text");
-            
-            
+
             
 			//Every time the simulation "ticks", this will be called
 			force.on("tick", function() {
@@ -121,6 +128,9 @@
 				nodes.attr("cx", function(d) { return d.x; })
 					 .attr("cy", function(d) { return d.y; });
 	
+                texts
+                .attr("x", function(d) {return d.x;} )
+                .attr("y", function(d) {return d.y;}); 
 			});
 // the on tick function adjusts the positions of the edges and the nodes on SVG
 // according to the dynamic of the force object. (d.source.x , ... )
