@@ -14,8 +14,8 @@
 		<script type="text/javascript">
 
 			//Width and height
-			var w = 1000;
-			var h = 800;
+			var w = 1250;
+			var h = 650;
 
 			// Refactor into JSON
 			var dataset = {
@@ -29,23 +29,24 @@
 					{ name: "George" },
 					{ name: "Hannah" },
 					{ name: "Iris" },
-					{ name: "Jerry" }
+					{ name: "Jerry" },
+                    { name: "Jim" },
+                    { name: "Joe" },
+                    { name: "Joe" }
 				],
 				edges: [
 					{ source: 0, target: 1 },
 					{ source: 0, target: 2 },
 					{ source: 0, target: 3 },
-					{ source: 0, target: 4 },
+					{ source: 1, target: 4 },
 					{ source: 1, target: 5 },
-					{ source: 2, target: 5 },
-					{ source: 2, target: 5 },
-					{ source: 3, target: 4 },
-					{ source: 5, target: 8 },
-					{ source: 5, target: 9 },
-					{ source: 6, target: 7 },
-					{ source: 7, target: 8 },
-					{ source: 8, target: 9 }
-				]
+					{ source: 2, target: 6 },
+					{ source: 2, target: 7 },
+					{ source: 2, target: 8 },
+					{ source: 3, target: 9 },
+					{ source: 3, target: 10 },
+					{ source: 3, target: 11 },
+					{ source: 3, target: 12 }				]
 			};
 
 			//Initialize a default force layout, using the nodes and edges in dataset
@@ -53,12 +54,12 @@
 								 .nodes(dataset.nodes) // add nodes to the force layout
 								 .links(dataset.edges)  // add edges to the force layout
 								 .size([w, h])          // add size of the canvas to the force layout
-								 .linkDistance([50])    // add distance of edges
+								 .linkDistance([250])    // add distance of edges
 								 /*.linkDistance(function (d){
                                     return [(d.value)]
                                     // we can probably parse it to int
                                  })*/
-                                 .charge([-100])
+                                 .charge([-2000])
 								 .start();
 // the distance is like a natural distance of a spring
 // the charge ~ the repulsion
@@ -89,7 +90,7 @@
 				.data(dataset.nodes)
 				.enter()
 				.append("circle")
-				.attr("r", 10)
+				.attr("r", 70)
 				.style("fill", function(d, i) {
 					return colors(i);
 				})
