@@ -17,7 +17,6 @@
         var w = 1000;
         var h = 650;
 
-         // TODO - Refactor into JSON
         var dataset = {
             nodes: [
                 {
@@ -31,7 +30,7 @@
                 },
                 {
                     name: "Exeter Group"
-                },
+                }/*,
                 {
                     name: "Edward"
                 },
@@ -58,69 +57,144 @@
                 },
                 {
                     name: "Joe"
-                }
+                }*/
     ],
             edges: [
                 {
                     source: 0,
                     target: 1,
-                    direct: 1
+                    level: 0
                 },
                 {
                     source: 0,
                     target: 2,
-                    direct: 1
+                    level: 0
                 },
                 {
                     source: 0,
                     target: 3,
-                    direct: 1
+                    level: 0
                 },
+                /*
                 {
                     source: 1,
                     target: 4,
-                    direct: 1
+                    level: 1
                 },
                 {
                     source: 1,
                     target: 5,
-                    direct: 1
+                    level: 1
                 },
                 {
                     source: 2,
                     target: 6,
-                    direct: 1
+                    level: 1
                 },
                 {
                     source: 2,
                     target: 7,
-                    direct: 1
+                    level: 1
                 },
                 {
                     source: 2,
                     target: 8,
-                    direct: 1
+                    level: 1
                 },
                 {
                     source: 3,
                     target: 9,
-                    direct: 1
+                    level: 1
                 },
                 {
                     source: 3,
                     target: 10,
-                    direct: 1
+                    level: 1
                 },
                 {
                     source: 3,
                     target: 11,
-                    direct: 1
+                    level: 1
                 },
                 {
                     source: 3,
                     target: 12,
-                    direct: 1
-                }]
+                    level: 1
+                },*/
+            ////////////////////////////////////////////
+            // Add indirect edges
+                /*{
+                    source: 1,
+                    target: 2,
+                    level: 2
+                },
+                {
+                    source: 2,
+                    target: 3,
+                    level: 2
+                },
+                {
+                    source: 1,
+                    target: 3,
+                    level: 2
+                },*/
+                // intra cluster 1
+                /*
+                {
+                    source: 4,
+                    target: 5,
+                    level: 3
+                },*/
+                // intra cluster 2
+                /*
+                {
+                    source: 6,
+                    target: 7,
+                    level: 3
+                },
+                {
+                    source: 7,
+                    target: 8,
+                    level: 3
+                },
+                {
+                    source: 6,
+                    target: 8,
+                    level: 3
+                },*/
+                // intra cluster 3
+                /*
+                {
+                    source: 9,
+                    target: 10,
+                    level: 3
+                },
+                {
+                    source: 9,
+                    target: 11,
+                    level: 3
+                },
+                {
+                    source: 9,
+                    target: 12,
+                    level: 3
+                },
+                {
+                    source: 10,
+                    target: 11,
+                    level: 3
+                },
+                {
+                    source: 10,
+                    target: 12,
+                    level: 3
+                },
+                {
+                    source: 11,
+                    target: 12,
+                    level: 3
+                }*/
+            ]
         };
 
          //Initialize a default force layout, using the nodes and edges in dataset
@@ -128,12 +202,35 @@
             .nodes(dataset.nodes) // add nodes to the force layout
             .links(dataset.edges) // add edges to the force layout
             .size([w, h]) // add size of the canvas to the force layout
-            .linkDistance([250]) // add distance of edges
-            /*.linkDistance(function (d){
-                                    return [(d.value)]
-                                    // we can probably parse it to int
-                                 })*/
-            .charge([-2000])
+            //.linkDistance([250]) // add distance of edges
+            .linkDistance(function (d) {
+                return 250;
+            /*
+                if (d.level == 0) {
+                    return 500;
+                } else if(d.level == 1){
+                    return 200;
+                } else if(d.level == 2){
+                    return 200;   
+                } else if(d.level == 3){
+                    return 200;
+                }*/
+            })
+            //.charge([-2000])
+            .charge(function (d){
+                return -2000;
+                /*
+                if (d.direct == 0) {
+                    return -2000;
+                } else if(d.direct == 1){
+                    return -100;
+                } else if(d.direct == 2){
+                    return -100;
+                } else if(d.direct == 3){
+                    return -100;
+                }*/
+                    
+            })
             .start();
          // the distance is like a natural distance of a spring
          // the charge ~ the repulsion
@@ -157,7 +254,15 @@
             .enter()
             .append("line")
             .style("stroke", "#ccc")
-            .style("stroke-width", 1);
+            //.style("stroke-width", 1);
+            .style("stroke-width", 
+                   function(d){
+                       if(d.level <= 1){
+                           return 1
+                       } else {
+                           return 1
+                       }
+                   });
 
 
         /**** Ben Athiwaratkun *****/
@@ -180,7 +285,7 @@
             .data(dataset.nodes)
             .enter()
             .append("circle")
-            .attr("r", 70)
+            .attr("r", 50)
             .style("fill", function (d, i) {
                 return colors(i);
             })
