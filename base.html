@@ -29,7 +29,8 @@
         var padding = 0; 
         var radius = 70;
         
-         // TODO - Refactor into JSON
+         // TODO - Original source should be a json graph
+        // Then, derive the dataset for nodes and edges from the nested graph
         var dataset = {
             nodes: [
                 {
@@ -150,7 +151,7 @@
             .charge([-2000])
             .start();
 
-        var colors = d3.scale.category10();
+        var colors = d3.scale.category20();
 
         /* initilization - create the SVG object which displays the circles
             on the canvas.
@@ -171,7 +172,7 @@
             .data(dataset.edges)
             .enter()
             .append("line")
-            .style("stroke", "#ccc")
+            .style("stroke", "#eee") // #fff
             .style("stroke-width", 1);
 
 
@@ -286,7 +287,7 @@
 
 
 
-
+        // TODO - modify this so that it bounces off the walls
         function collide(alpha) {
             var quadtree = d3.geom.quadtree(dataset.nodes);
             return function (d) {
