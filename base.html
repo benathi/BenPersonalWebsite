@@ -36,40 +36,42 @@
                     name: "Ben Athiwaratkun"
                 },
                 {
-                    name: "IPhO"
+                    name: "Profile"
                 },
                 {
-                    name: "Williams College"
+                    name: "Kaggle Projects"
                 },
                 {
-                    name: "Exeter Group"
+                    name: "WebGL"
                 },
                 {
-                    name: "Edward"
+                    name: "Higgs Boson"
                 },
                 {
-                    name: "Felicity"
+                    name: "Reinforcement Learning"
                 },
                 {
-                    name: "George"
+                    name: "Book Recommendation System"
                 },
                 {
-                    name: "Hannah"
+                    name: "Neural Networks"
                 },
                 {
-                    name: "Iris"
+                    name: "Probabilistic Graphical Models"
                 },
                 {
-                    name: "Jerry"
+                    name: "Predicting Malware"
                 },
                 {
-                    name: "Jim"
+                    name: "Pacman - Q Learning"
                 },
                 {
-                    name: "Joe"
+                    name: "Technical Toolbox",
+                    link: "https://github.com/benathi/MyVimrc"
                 },
                 {
-                    name: "Joe"
+                    name: "Display Advertising Challenge",
+                    link: "https://github.com/benathi/Kaggle-DisplayAdvertisingChallenge"
                 }
     ],
             edges: [
@@ -140,16 +142,14 @@
             .nodes(dataset.nodes) // add nodes to the force layout
             .links(dataset.edges) // add edges to the force layout
             .size([w, h]) // add size of the canvas to the force layout
-            .linkDistance([250]) // add distance of edges
+            .linkDistance([200]) // Fix distance
             /*.linkDistance(function (d){
                                     return [(d.value)]
                                     // we can probably parse it to int
                                  })*/
             .charge([-2000])
             .start();
-         // the distance is like a natural distance of a spring
-         // the charge ~ the repulsion
-         // 
+
         var colors = d3.scale.category10();
 
         /* initilization - create the SVG object which displays the circles
@@ -222,13 +222,13 @@
                 d3.select(this)
                     .transition()
                     .duration(w*0.8)
-                    //.attr("r", w)
+                    .attr("r", w)
                     .style("fill-opacity", 0.0)
                     .attr("x", w)
-                    //.remove()
-                    .call(endall, function () {
+                    .remove()
+                    .call(endall, function (d) {
 
-
+                        var _link = d.link
                         // want to select all the elements and fade them away
                         svg.selectAll("circle")
                             .transition()
@@ -240,17 +240,11 @@
                             .style("fill-opacity", 0.0)
                             .remove()
                             .call(endall, function () {
-                                
+                                // Load a new page when everything is done
                                 console.log("Loading new page");
-                                window.location.href = "sub/a.html"
-                                // TODO - load a new page based on the name
-                                // static page for now
+                                window.location.href = _link;
                             })
-
-
-
                     });
-
             })
             .call(force.drag);
 
