@@ -218,7 +218,7 @@
             .on("click", function () {
                 d3.select(this)
                     .transition()
-                    .duration(w)
+                    .duration(w*0.8)
                     .attr("r", w)
                     .style("fill-opacity", 0.0)
                     .remove()
@@ -228,7 +228,7 @@
                         // want to select all the elements and fade them away
                         svg.selectAll("circle")
                             .transition()
-                            .duration(w)
+                            .duration(0.8*w)
                             .delay(function (d, i) {
                                 return i * 100;
                             })
