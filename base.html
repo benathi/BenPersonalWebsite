@@ -23,7 +23,7 @@
 <body>
     <script type="text/javascript">
         //Width and height
-        var w = 800;
+        var w = 960;
         var h = 500;
         var padding = 5; 
         var radius = 70;
@@ -144,6 +144,7 @@
             .size([w, h]) // add size of the canvas to the force layout
             .linkDistance(200) // Fix distance
             .charge(-2000)
+            
             .start();
 
         var colors = d3.scale.category20();

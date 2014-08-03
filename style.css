@@ -117,8 +117,9 @@ aside,
 }
 
 iframe {
-  width: 800px;
+  width: 960px;
   height: 500px;
-  border: 1px solid #DEDEDE;
+    border: 0px;
+  /*border: 1px solid #DEDEDE;*/
 }
 
