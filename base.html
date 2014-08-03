@@ -67,7 +67,7 @@
                 },
                 {
                     name: "Technical Toolbox",
-                    link: "https://github.com/benathi/MyVimrc"
+                    link: "http://github.com/benathi/MyVimrc"
                 },
                 {
                     name: "Display Advertising Challenge",
@@ -238,9 +238,9 @@
                             .style("fill-opacity", 0.0)
                             .remove()
                             .call(endall, function () {
-                                // Load a new page when everything is done
+                                // Load a new page (in a parent frame or current window) when everything is done
                                 console.log("Loading new page");
-                                window.location.href = _link;
+                                top.window.location.href = _link;
                             })
                     });
             })
