@@ -7,7 +7,6 @@
     <title>Home Page - Ben Athiwaratkun</title>
     <script type="text/javascript" src="../d3/d3.v3.js"></script>
     <style type="text/css">
-        /* TODO - style rules */
         /*
         circle:hover {
             opacity: 0 !important;
@@ -26,7 +25,7 @@
         //Width and height
         var w = 800;
         var h = 500;
-        var padding = 0; 
+        var padding = 5; 
         var radius = 70;
         
          // TODO - Original source should be a json graph
@@ -143,30 +142,20 @@
             .nodes(dataset.nodes) // add nodes to the force layout
             .links(dataset.edges) // add edges to the force layout
             .size([w, h]) // add size of the canvas to the force layout
-            .linkDistance([200]) // Fix distance
-            /*.linkDistance(function (d){
-                                    return [(d.value)]
-                                    // we can probably parse it to int
-                                 })*/
-            .charge([-2000])
+            .linkDistance(200) // Fix distance
+            .charge(-2000)
             .start();
 
         var colors = d3.scale.category20();
-
-        /* initilization - create the SVG object which displays the circles
-            on the canvas.
-            
-            */
 
          //Create SVG element
         var svg = d3.select("body")
             .append("svg")
             .attr("viewBox", "0 0 " + w + " " + h)
             .attr("preserveAspectRatio", "xMidYMid meet");
-        /*
-            .attr("width", w)
-            .attr("height", h);
-*/
+            //.attr("width", w)
+            //.attr("height", h);
+
          //Create edges as lines
         var edges = svg.selectAll("line")
             .data(dataset.edges)
