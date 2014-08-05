@@ -7,16 +7,10 @@
     <title>Home Page - Ben Athiwaratkun</title>
     <script type="text/javascript" src="../d3/d3.v3.js"></script>
     <style type="text/css">
-        /*
-        circle:hover {
-            opacity: 0 !important;
+        .node text {
+            pointer-events: none;
+            font: 10px sans-serif;
         }
-        circle {
-                -moz-transition: all 0.3s;
-                -o-transition: all 0.3s;
-                -webkit-transition: all 0.3s; 
-                transition: all 0.3s;    
-        }*/
     </style>
 </head>
 
@@ -139,7 +133,6 @@
                 }]
         };
 
-         //Initialize a default force layout, using the nodes and edges in dataset
         var force = d3.layout.force()
             .nodes(dataset.nodes) // add nodes to the force layout
             .links(dataset.edges) // add edges to the force layout
@@ -148,20 +141,8 @@
             .charge(-500)
             .linkStrength(1) //0.8
             .gravity(0) // 0.25
-
-         // Why is variable gravity not working?
-        /*
-            .gravity( function(d) { return 1;                                           //console.info("test")
-                
-                if(d.name === "Ben Athiwaratkun"){
-                    console.info(1)
-                    return 1;
-                } else {
-                    console.info(0)
-                    return 0;
-                }
-             }) */
-        .start();
+            // gravity might not be variable
+            .start();
 
         var colors = d3.scale.category20();
 
@@ -185,9 +166,9 @@
             .data(dataset.edges)
             .enter()
             .append("line")
-            .style("stroke", "#eee") // #fff
+            .style("stroke", "#eee")
             .style("stroke-width", 1);
-
+        /*
 
          // TODO - use labels instead
         var texts = svg.selectAll("text")
@@ -201,6 +182,7 @@
          //.attr("font-family", "sans-serif")
          //.attr("font-size", "20px")
          //.attr("fill", "red")
+*/
 
         function endall(transition, callback) {
             var n = 0;
@@ -225,8 +207,9 @@
             .data(dataset.nodes)
             .enter()
             .append("circle")
-            .attr("r", function(d){
-                if(d.name == centerNode){
+            .attr("class", "node")
+            .attr("r", function (d) {
+                if (d.name == centerNode) {
                     return centerRadius;
                 } else {
                     return radius;
@@ -266,18 +249,26 @@
                             .remove()
                             .call(endall, function () {
                                 // Load a new page (in a parent frame or current window) when everything is done
-                                console.log("Loading new page");
                                 top.window.location.href = _link;
                             })
                     });
             })
             .call(force.drag);
 
-
+        // TODO - make it work - add G and then add circles and text
+        nodes.append("text")
+         .attr("dx", 12)
+         .attr("dy", ".35em")
+        //.attr("text-anchor", "middle")
+            .text(function (d) {
+                console.info(d.name);
+                return d.name;
+            })
+         //
 
 
          //Every time the simulation "ticks", this will be called
-        force.on("tick", function () {
+         force.on("tick", function () {
 
             edges.attr("x1", function (d) {
                 return d.source.x;
@@ -294,8 +285,8 @@
 
             dataset.nodes.forEach(function (d, i) {
                 if (d.name == centerNode) {
-                    d.x = w/2;
-                    d.y = w/4; // TODO - investigate why w/4
+                    d.x = w / 2;
+                    d.y = w / 4; // TODO - investigate why w/4
                 }
             });
 
@@ -308,13 +299,14 @@
                 });
             nodes.each(collide(0.1));
 
+            /*
             texts
                 .attr("x", function (d) {
                     return d.x;
                 })
                 .attr("y", function (d) {
                     return d.y;
-                });
+                });*/
         });
 
 
