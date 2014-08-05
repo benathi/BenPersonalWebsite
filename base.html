@@ -25,11 +25,11 @@
         //Width and height
         var w = 960;
         var h = 500;
-        var padding = 5; 
-        var radius = 70;
-        
+        var padding = 5;
+        var radius = 50;
+
          // TODO - Original source should be a json graph
-        // Then, derive the dataset for nodes and edges from the nested graph
+         // Then, derive the dataset for nodes and edges from the nested graph
         var dataset = {
             nodes: [
                 {
@@ -145,8 +145,8 @@
             .size([w, h]) // add size of the canvas to the force layout
             .linkDistance(200) // Fix distance
             .charge(-2000)
-            .linkStrength(0.8)
-            .gravity(0.2)
+            //.linkStrength(1) 0.8
+            .gravity(0.25)
             .start();
 
         var colors = d3.scale.category20();
@@ -158,6 +158,12 @@
             .attr("preserveAspectRatio", "xMidYMid meet");
             //.attr("width", w)
             //.attr("height", h);
+        
+        // Fading in
+            svg.style("opacity", 1e-6)
+            .transition()
+            .duration(1000)
+            .style("opacity", 1);
 
          //Create edges as lines
         var edges = svg.selectAll("line")
@@ -170,7 +176,7 @@
 
         /**** Ben Athiwaratkun *****/
         /** Adding Text  **/
-        // TODO - use labels instead
+         // TODO - use labels instead
         var texts = svg.selectAll("text")
             .data(dataset.nodes)
             .enter()
@@ -194,13 +200,13 @@
                 });
         }
 
-        // TODO - add backgroud to circle
-        // the background should be a vector graphic?
-        // need to make sure it scales ok
-        // the background will pop up on mousehover as the transparency increased
-        // 
-        
-        
+         // TODO - add backgroud to circle
+         // the background should be a vector graphic?
+         // need to make sure it scales ok
+         // the background will pop up on mousehover as the transparency increased
+         // 
+
+
          //Create nodes as circles
         var nodes = svg.selectAll("circle")
             .data(dataset.nodes)
@@ -217,27 +223,27 @@
             })
             .on("mouseout", function () {
                 d3.select(this).style("fill-opacity", 0.3)
-                    .attr("r", 70)
+                    .attr("r", radius)
             })
             .on("click", function () {
                 d3.select(this)
                     .transition()
-                    .duration(w*0.6)
-                    .attr("r", w*0.6)
+                    .duration(w * 0.6)
+                    .attr("r", w * 0.6)
                     .style("fill-opacity", 0.0)
                     .attr("x", w)
                     .remove()
                     .call(endall, function (d) {
 
                         var _link = d.link
-                        // want to select all the elements and fade them away
+                            // want to select all the elements and fade them away
                         svg.selectAll("circle")
                             .transition()
-                            .duration(0.4*w)
+                            .duration(0.4 * w)
                             .delay(function (d, i) {
                                 return i * 20;
                             })
-                            .attr("r", 0.4*w)
+                            .attr("r", 0.4 * w)
                             .style("fill-opacity", 0.0)
                             .remove()
                             .call(endall, function () {
@@ -248,6 +254,7 @@
                     });
             })
             .call(force.drag);
+
 
 
 
@@ -287,7 +294,7 @@
 
 
 
-        // TODO - modify this so that it bounces off the walls
+         // TODO - modify this so that it bounces off the walls
         function collide(alpha) {
             var quadtree = d3.geom.quadtree(dataset.nodes);
             return function (d) {
