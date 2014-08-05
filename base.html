@@ -262,32 +262,32 @@
          //Every time the simulation "ticks", this will be called
         force.on("tick", function () {
 
-            edges.attr("x1", function (d) {
+            edges.attr("x1", function (d,i) {
                 return d.source.x;
             })
-                .attr("y1", function (d) {
+                .attr("y1", function (d,i) {
                     return d.source.y;
                 })
-                .attr("x2", function (d) {
+                .attr("x2", function (d,i) {
                     return d.target.x;
                 })
-                .attr("y2", function (d) {
+                .attr("y2", function (d,i) {
                     return d.target.y;
                 });
 
-            nodes.attr("cx", function (d) {
+            nodes.attr("cx", function (d,i) {
                 return d.x;
             })
-                .attr("cy", function (d) {
+                .attr("cy", function (d,i) {
                     return d.y;
                 });
             nodes.each(collide(0.1));
 
             texts
-                .attr("x", function (d) {
+                .attr("x", function (d,i) {
                     return d.x;
                 })
-                .attr("y", function (d) {
+                .attr("y", function (d,i) {
                     return d.y;
                 });
         });
@@ -323,7 +323,7 @@
         }
 
 
-        // not able to move much due to constraints
+         // not able to move much due to constraints
         function shake() {
             nodes.forEach(function (o, i) {
                 o.x += (Math.random() - .5) * 2 * radius;

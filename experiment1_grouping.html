@@ -53,14 +53,17 @@ d3.select("body")
 function tick(e) {
 
   // Push different nodes in different directions for clustering.
+    /*
   var k = 2 * e.alpha;
   nodes.forEach(function(o, i) {
     o.y += i & 1 ? k : -k;
     o.x += i & 2 ? k : -k;
-  });
+  });*/
 
-  node.attr("cx", function(d) { return d.x; })
-      .attr("cy", function(d) { return d.y; });
+    // I suspect that this doesn't work before the order of node is not necessarily preserved 
+    var k = 4 * e.alpha;
+  node.attr("cx", function(d,i) { return d.x + (i & 1 ? k : -k); })
+      .attr("cy", function(d,i) { return d.y + (i & 2 ? k : -k); });
 }
 
 function mousedown() {
