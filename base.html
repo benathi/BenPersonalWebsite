@@ -27,7 +27,8 @@
         var h = 500;
         var padding = 5;
         var radius = 50;
-
+        var centerRadius = 60;
+        var centerNode = "Ben Athiwaratkun";
          // TODO - Original source should be a json graph
          // Then, derive the dataset for nodes and edges from the nested graph
         var dataset = {
@@ -74,8 +75,7 @@
                     name: "Display Advertising Challenge",
                     link: "https://github.com/benathi/Kaggle-DisplayAdvertisingChallenge"
                 }
-    ]       
-            ,
+    ],
             edges: [
                 {
                     source: 0,
@@ -138,18 +138,18 @@
                     direct: 1
                 }]
         };
-        
+
          //Initialize a default force layout, using the nodes and edges in dataset
         var force = d3.layout.force()
             .nodes(dataset.nodes) // add nodes to the force layout
             .links(dataset.edges) // add edges to the force layout
             .size([w, h]) // add size of the canvas to the force layout
-            .linkDistance(200) // Fix distance
-            .charge(-2000)
-            //.linkStrength(1) 0.8
-            .gravity(0.25)
-        
-            // Why is variable gravity not working?
+            .linkDistance(100) // Fix distance
+            .charge(-500)
+            .linkStrength(1) //0.8
+            .gravity(0) // 0.25
+
+         // Why is variable gravity not working?
         /*
             .gravity( function(d) { return 1;                                           //console.info("test")
                 
@@ -161,7 +161,7 @@
                     return 0;
                 }
              }) */
-            .start();
+        .start();
 
         var colors = d3.scale.category20();
 
@@ -225,7 +225,13 @@
             .data(dataset.nodes)
             .enter()
             .append("circle")
-            .attr("r", radius)
+            .attr("r", function(d){
+                if(d.name == centerNode){
+                    return centerRadius;
+                } else {
+                    return radius;
+                }
+            })
             .style("fill", function (d, i) {
                 return colors(i);
             })
@@ -236,7 +242,6 @@
             })
             .on("mouseout", function () {
                 d3.select(this).style("fill-opacity", 0.3)
-                    .attr("r", radius)
             })
             .on("click", function () {
                 d3.select(this)
@@ -287,9 +292,17 @@
                     return d.target.y;
                 });
 
-            nodes.attr("cx", function (d) {
-                return d.x;
-            })
+            dataset.nodes.forEach(function (d, i) {
+                if (d.name == centerNode) {
+                    d.x = w/2;
+                    d.y = w/4; // TODO - investigate why w/4
+                }
+            });
+
+            nodes
+                .attr("cx", function (d) {
+                    return d.x;
+                })
                 .attr("cy", function (d) {
                     return d.y;
                 });
@@ -335,7 +348,7 @@
         }
 
 
-        // not able to move much due to constraints
+         // not able to move much due to constraints
         function shake() {
             nodes.forEach(function (o, i) {
                 o.x += (Math.random() - .5) * 2 * radius;
