@@ -42,7 +42,8 @@
                     name: "Kaggle Projects"
                 },
                 {
-                    name: "WebGL"
+                    name: "Ben's Github",
+                    link: "https://github.com/benathi"
                 },
                 {
                     name: "Higgs Boson"
@@ -57,7 +58,7 @@
                     name: "Neural Networks"
                 },
                 {
-                    name: "Probabilistic Graphical Models"
+                    name: "WebGL"
                 },
                 {
                     name: "Predicting Malware"
@@ -67,7 +68,7 @@
                 },
                 {
                     name: "Technical Toolbox",
-                    link: "http://github.com/benathi/MyVimrc"
+                    link: "https://github.com/benathi/MyVimrc"
                 },
                 {
                     name: "Display Advertising Challenge",
@@ -144,7 +145,8 @@
             .size([w, h]) // add size of the canvas to the force layout
             .linkDistance(200) // Fix distance
             .charge(-2000)
-            
+            .linkStrength(0.8)
+            .gravity(0.2)
             .start();
 
         var colors = d3.scale.category20();
