@@ -74,7 +74,8 @@
                     name: "Display Advertising Challenge",
                     link: "https://github.com/benathi/Kaggle-DisplayAdvertisingChallenge"
                 }
-    ],
+    ]       
+            ,
             edges: [
                 {
                     source: 0,
@@ -147,19 +148,19 @@
             .charge(-2000)
             //.linkStrength(1) 0.8
             .gravity(0.25)
+        
+            // Why is variable gravity not working?
         /*
-            .gravity(function(d) {
-                // Why is this not working?
-                console.info("test")
-                //console.info(d.name);                
+            .gravity( function(d) { return 1;                                           //console.info("test")
+                
                 if(d.name === "Ben Athiwaratkun"){
                     console.info(1)
-                    return [1];
+                    return 1;
                 } else {
                     console.info(0)
-                    return [0];
+                    return 0;
                 }
-            })*/
+             }) */
             .start();
 
         var colors = d3.scale.category20();
@@ -178,7 +179,7 @@
             .transition()
             .duration(1000)
             .style("opacity", 1);
-/*
+
          //Create edges as lines
         var edges = svg.selectAll("line")
             .data(dataset.edges)
@@ -186,7 +187,7 @@
             .append("line")
             .style("stroke", "#eee") // #fff
             .style("stroke-width", 1);
-*/
+
 
          // TODO - use labels instead
         var texts = svg.selectAll("text")
@@ -272,7 +273,7 @@
 
          //Every time the simulation "ticks", this will be called
         force.on("tick", function () {
-/*
+
             edges.attr("x1", function (d) {
                 return d.source.x;
             })
@@ -285,7 +286,7 @@
                 .attr("y2", function (d) {
                     return d.target.y;
                 });
-*/
+
             nodes.attr("cx", function (d) {
                 return d.x;
             })
