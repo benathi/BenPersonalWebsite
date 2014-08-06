@@ -217,32 +217,44 @@
             .on("mouseout", function () {
                 d3.select(this).style("fill-opacity", 0.3)
             })
-            .on("click", function () {
-                d3.select(this)
-                    .transition()
-                    .duration(w * 0.6)
-                    .attr("r", w * 0.6)
-                    .style("fill-opacity", 0.0)
-                    .attr("x", w)
-                    .remove()
-                    .call(endall, function (d) {
+            .on("click", function (d) {
+                var _link_exist = typeof (d.link) != "undefined";
+                console.info(_link_exist);
+                var _link = d.link
 
-                        var _link = d.link
+                if (!_link_exist) {
+                    // if the link does not exist
+                    
+                } else {
+                    // if the link exists
+                    d3.select(this)
+                        .transition()
+                        .duration(w * 0.6)
+                        .attr("r", w * 0.6)
+                        .style("fill-opacity", 0.0)
+                        .attr("x", w)
+                        .remove()
+                        .call(endall, function (d) {
+
+
                             // want to select all the elements and fade them away
-                        svg.selectAll("circle")
-                            .transition()
-                            .duration(0.4 * w)
-                            .delay(function (d, i) {
-                                return i * 20;
-                            })
-                            .attr("r", 0.4 * w)
-                            .style("fill-opacity", 0.0)
-                            .remove()
-                            .call(endall, function () {
-                                // Load a new page (in a parent frame or current window) when everything is done
-                                top.window.location.href = _link;
-                            })
-                    });
+                            svg.selectAll("circle")
+                                .transition()
+                                .duration(0.4 * w)
+                                .delay(function (d, i) {
+                                    return i * 20;
+                                })
+                                .attr("r", 0.4 * w)
+                                .style("fill-opacity", 0.0)
+                                .remove()
+                                .call(endall, function () {
+                                    // Load a new page (in a parent frame or current window) when everything is done
+
+                                    top.window.location.href = _link;
+
+                                })
+                        });
+                }
             })
 
          // 2.3 Each node has a text label 
