@@ -50,7 +50,7 @@
                     name: "Book Recommendation System"
                 },
                 {
-                    name: "Neural Networks"
+                    name: "Neural \nNetworks"
                 },
                 {
                     name: "WebGL"
@@ -168,21 +168,7 @@
             .append("line")
             .style("stroke", "#eee")
             .style("stroke-width", 1);
-        /*
 
-         // TODO - use labels instead
-        var texts = svg.selectAll("text")
-            .data(dataset.nodes)
-            .enter()
-            .append("text")
-            .text(function (d) {
-                return d.name;
-            })
-            .attr("text-anchor", "middle");
-         //.attr("font-family", "sans-serif")
-         //.attr("font-size", "20px")
-         //.attr("fill", "red")
-*/
 
         function endall(transition, callback) {
             var n = 0;
@@ -263,12 +249,15 @@
          nodes.append("text")
             .attr("text-anchor", "middle")
             .text(function (d) {
-                console.info(d.name);
                 return d.name;
+            })
+            .style("font-size", 13)
+            .attr("fill", function (d, i) {
+                return d3.rgb(colors(i)).darker(2);
             })
 
 
-         //Every time the simulation "ticks", this will be called
+         // 3. Ticking
          force.on("tick", function () {
 
             edges.attr("x1", function (d) {
@@ -295,24 +284,10 @@
                 function (d) {
                     return "translate(" + d.x + "," + d.y + ")";
                 });
-            /*
-                .attr("cx", function (d) {
-                    return d.x;
-                })
-                .attr("cy", function (d) {
-                    return d.y;
-                });
-                */
+
             nodes.each(collide(0.1));
 
-            /*
-            texts
-                .attr("x", function (d) {
-                    return d.x;
-                })
-                .attr("y", function (d) {
-                    return d.y;
-                });*/
+
         });
 
 
@@ -347,6 +322,7 @@
 
 
          // not able to move much due to constraints
+         // check if there's something wrong with the method
         function shake() {
             nodes.forEach(function (o, i) {
                 o.x += (Math.random() - .5) * 2 * radius;
