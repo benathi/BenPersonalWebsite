@@ -202,12 +202,17 @@
          // 
 
 
-         //Create nodes as circles
-        var nodes = svg.selectAll("circle")
+         // (2) Nodes
+         // 2.1 Each node is a collection g
+        var nodes = svg.selectAll(".node")
             .data(dataset.nodes)
             .enter()
-            .append("circle")
+            .append("g")
             .attr("class", "node")
+            .call(force.drag);
+
+         // 2.2 Each node has a circle as an element
+        nodes.append("circle")
             .attr("r", function (d) {
                 if (d.name == centerNode) {
                     return centerRadius;
@@ -253,18 +258,14 @@
                             })
                     });
             })
-            .call(force.drag);
 
-        // TODO - make it work - add G and then add circles and text
-        nodes.append("text")
-         .attr("dx", 12)
-         .attr("dy", ".35em")
-        //.attr("text-anchor", "middle")
+         // 2.3 Each node has a text label 
+         nodes.append("text")
+            .attr("text-anchor", "middle")
             .text(function (d) {
                 console.info(d.name);
                 return d.name;
             })
-         //
 
 
          //Every time the simulation "ticks", this will be called
@@ -290,13 +291,18 @@
                 }
             });
 
-            nodes
+            nodes.attr("transform",
+                function (d) {
+                    return "translate(" + d.x + "," + d.y + ")";
+                });
+            /*
                 .attr("cx", function (d) {
                     return d.x;
                 })
                 .attr("cy", function (d) {
                     return d.y;
                 });
+                */
             nodes.each(collide(0.1));
 
             /*
