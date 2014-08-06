@@ -18,7 +18,7 @@
     <script type="text/javascript">
         //Width and height
         var w = 960;
-        var h = 500;
+        var h = 600;
         var padding = 5;
         var radius = 50;
         var centerRadius = 60;
@@ -139,7 +139,7 @@
             .size([w, h]) // add size of the canvas to the force layout
             .linkDistance(100) // Fix distance
             .charge(-500)
-            .linkStrength(1) //0.8
+            .linkStrength(0.8) //0.8
             .gravity(0) // 0.25
             // gravity might not be variable
             .start();
@@ -149,11 +149,11 @@
          //Create SVG element
         var svg = d3.select("body")
             .append("svg")
-            .attr("viewBox", "0 0 " + w + " " + h)
-            .attr("preserveAspectRatio", "xMidYMid meet")
-            .on("mousedown", shake);
-         //.attr("width", w)
-         //.attr("height", h);
+            //.attr("viewBox", "0 0 " + w + " " + h)
+            //.attr("preserveAspectRatio", "xMidYMid meet")
+            .on("mousedown", shake)
+            .attr("width", w)
+            .attr("height", h);
 
          // Fading in
         svg.style("opacity", 0)
@@ -285,7 +285,7 @@
                     return "translate(" + d.x + "," + d.y + ")";
                 });
 
-            nodes.each(collide(0.1));
+            nodes.each(collide(0.2));
 
 
         });
