@@ -22,8 +22,8 @@
         var padding = 5;
         var radius = 50;
         var centerRadius = 60;
-        var centerNode = "Ben Athiwaratkun";
-
+         //var centerNode = "Ben Athiwaratkun";
+        var centerNode = 0;
 
         var tree = {
             name: "Ben Athiwaratkun",
@@ -114,6 +114,7 @@
             edges: []
         };
         index_count = -1;
+
         function generateDataset(data) {
             aux(-1, data)
         }
@@ -129,12 +130,14 @@
                 dataset.nodes.push({
                     name: _name,
                     index: index_count,
-                    link: _link
+                    link: _link,
+                    parent: parent
                 })
             } else { // if it has no link
                 dataset.nodes.push({
                     name: _name,
-                    index: index_count
+                    index: index_count,
+                    parent: parent
                 })
             }
 
@@ -150,16 +153,17 @@
             var current_index = index_count;
             if (typeof (data.subtree) != "undefined") {
                 for (var i = 1; i <= data.subtree.length; i++) {
-                    aux(current_index, data.subtree[i-1]);
+                    aux(current_index, data.subtree[i - 1]);
                 }
             }
             return;
         }
 
-        
 
-        
+
+
         generateDataset(tree);
+        console.info(dataset);
         var force = d3.layout.force()
             .nodes(dataset.nodes) // add nodes to the force layout
             .links(dataset.edges) // add edges to the force layout
@@ -167,7 +171,7 @@
             .linkDistance(100) // Fix distance
             .charge(-500)
             .linkStrength(0.8) //0.8
-            .gravity(0.02) // 0.25
+            .gravity(0.05) // 0.25
             // gravity might not be variable
             .start();
 
@@ -227,7 +231,7 @@
          // 2.2 Each node has a circle as an element
         nodes.append("circle")
             .attr("r", function (d) {
-                if (d.name == centerNode) {
+                if (d.index == centerNode) {
                     return centerRadius;
                 } else {
                     return radius;
@@ -245,12 +249,47 @@
                 d3.select(this).style("fill-opacity", 0.3)
             })
             .on("click", function (d) {
+                // d is the data
                 var _link_exist = (typeof (d.link) != "undefined");
                 console.info(_link_exist);
                 var _link = d.link
 
                 if (!_link_exist) {
                     // if the link does not exist
+
+
+
+
+                    // TODO - add transition later
+                    // TODO - select only the center node?
+                    // (condition - parent's attribute index = 0)
+
+
+                    centerNode = d.index;
+                    console.info("The center node is:" + d.name)
+                    console.info("The center index is:" + d.index)
+
+                    d3.select(this).attr("r", centerRadius);
+
+
+
+                    nodes
+                        .selectAll("circle")
+                        .transition()
+                        .duration(1000)
+                        .style("fill-opacity", function(d){
+                            if(d.parent != centerNode &&
+                              d.index != centerNode){
+                                return 0.0;   
+                            } else {
+                                return 0.3;   
+                            }
+                        })
+                        /*.attr("r", function(d){
+                            if(d.index == centerNode){
+                                return centerRadius;   
+                            }
+                        });*/
 
                 } else {
                     // if the link exists
@@ -259,7 +298,6 @@
                         .duration(w * 0.6)
                         .attr("r", w * 0.6)
                         .style("fill-opacity", 0.0)
-                        .attr("x", w)
                         .remove()
                         .call(endall, function (d) {
 
@@ -312,12 +350,15 @@
                     return d.target.y;
                 });
 
+            // Fixing
+            alpha = 0.1;
             dataset.nodes.forEach(function (d, i) {
-                if (d.name == centerNode) {
-                    d.x = w / 2;
-                    d.y = w / 4; // TODO - investigate why w/4
+                if (d.index == centerNode) {
+                    d.x += alpha * (w / 2 - d.x);
+                    d.y += alpha * (w / 4 - d.y); // TODO - investigate why w/4
                 }
             });
+
 
             nodes.attr("transform",
                 function (d) {
@@ -328,6 +369,7 @@
 
 
         });
+
 
 
 
