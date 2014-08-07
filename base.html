@@ -256,22 +256,10 @@
 
                 if (!_link_exist) {
                     // if the link does not exist
-
-
-
-
-                    // TODO - add transition later
-                    // TODO - select only the center node?
-                    // (condition - parent's attribute index = 0)
-
-
+                    
+                    
+                    var previous_centerNode = centerNode;
                     centerNode = d.index;
-                    console.info("The center node is:" + d.name)
-                    console.info("The center index is:" + d.index)
-
-                    d3.select(this).attr("r", centerRadius);
-
-
 
                     nodes
                         .selectAll("circle")
@@ -285,11 +273,13 @@
                                 return 0.3;   
                             }
                         })
-                        /*.attr("r", function(d){
-                            if(d.index == centerNode){
-                                return centerRadius;   
+                        .attr("r", function(d){
+                            if(d.index == previous_centerNode){
+                                return radius;   
+                            } else if (d.index == centerNode){
+                                return centerRadius;
                             }
-                        });*/
+                        });
 
                 } else {
                     // if the link exists
