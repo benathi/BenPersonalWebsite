@@ -112,20 +112,60 @@
           ]
         };
 
+        var tree_derived = {
+            nodes: [],
+            edges: []
+        };
+        index_count = -1;
         
-        
-        var aux() = function(){
-            
+        function f(data) {
+            aux(-1, data)
         }
-        var bfs() = function(){
-            var derived_tree = {};
-            
+
+        function aux(parent, data) {
+            index_count += 1;
+            // 1. creating nodes
+            var _name = data.name;
+            var _link = data.link;
+            // expecting the link to be undefined
+            // add code to handle if this is not the case
+            if (typeof (_link) != "undefined") {
+                tree_derived.nodes.push({
+                    name: _name,
+                    index: index_count,
+                    link: _link
+                })
+            } else { // if it has no link
+                tree_derived.nodes.push({
+                    name: _name,
+                    index: index_count
+                })
+            }
+
+            // 2. creating edges
+            if (parent >= 0) {
+                tree_derived.edges.push({
+                    source: parent,
+                    target: index_count,
+                    direct: 1
+                })
+            }
+
+            var current_index = index_count;
+            if (typeof (data.subtree) != "undefined") {
+                for (var i = 1; i <= data.subtree.length; i++) {
+                    aux(current_index, data.subtree[i-1]);
+                }
+            }
+            return;
         }
+
+        f(tree)
 
 
         /*****************/
-
-        var dataset = {
+/*
+         var dataset = {
             nodes: [
                 {
                     name: "Ben Athiwaratkun"
@@ -232,7 +272,11 @@
                     direct: 1
                 }]
         };
-
+*/
+        var dataset = tree_derived;
+        console.info(dataset)
+        
+        
         var force = d3.layout.force()
             .nodes(dataset.nodes) // add nodes to the force layout
             .links(dataset.edges) // add edges to the force layout
@@ -240,7 +284,7 @@
             .linkDistance(100) // Fix distance
             .charge(-500)
             .linkStrength(0.8) //0.8
-            .gravity(0) // 0.25
+            .gravity(0.01) // 0.25
             // gravity might not be variable
             .start();
 
@@ -318,7 +362,7 @@
                 d3.select(this).style("fill-opacity", 0.3)
             })
             .on("click", function (d) {
-                var _link_exist = typeof (d.link) != "undefined";
+                var _link_exist = (typeof (d.link) != "undefined");
                 console.info(_link_exist);
                 var _link = d.link
 
