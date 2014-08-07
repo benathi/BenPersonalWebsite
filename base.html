@@ -19,15 +19,15 @@
         //Width and height
         var w = 960;
         var h = 600;
-        var padding = 20;
         var radius = 50;
-        var centerRadius = 80;
+        var centerRadius = 120;
+        var padding = 20;
         var radius_parent = 20;
          //var centerNode = "Ben Athiwaratkun";
         var centerNode = 0;
         var transparency_normal = 0.7;
         var transparency_hover_factor = 0.4;
-        var transparency_defocused = 0.0;
+        var transparency_defocused = 0.05;
         var transparency_parent = 1.0;
 
 
@@ -81,11 +81,11 @@
                         name: "Public Projects",
                         subtree: [{
                                 name: "Higgs Boson",
-                                link: ""
+                                link: "https://github.com/benathi/HiggsBoson"
                     },
                             {
                                 name: "Display Advertising Challenge",
-                                link: ""
+                                link: "https://github.com/benathi/Kaggle-DisplayAdvertisingChallenge"
                     },
                             {
                                 name: "Digit Recognition",
@@ -97,9 +97,9 @@
                     name: "Technical Toolboxes",
                     subtree: [{
                         name: "Vim",
-                        link: ""
+                        link: "https://github.com/benathi/MyVimrc"
             }, {
-                        name: ".gitignore",
+                        name: "LaTex Templates",
                         link: ""
             }]
      }, {
@@ -108,8 +108,6 @@
                         name: "Hadoop with EC2",
                         link: ""
             }]
-     }, {
-
      }
 
           ]
@@ -313,19 +311,29 @@
                     nodes.selectAll("text")
                         .transition()
                         .duration(500)
-                        .style("fill-opacity", function (d) {
-                            if (d.parent != centerNode && d.index != centerNode) {
+                        .style("fill-opacity", function (_d) {
+                            if (_d.parent != centerNode && _d.index != centerNode) {
                                 return transparency_defocused;
                             } else {
                                 return transparency_normal;
                             }
                         });
 
-                    // TODO - issue: center node disappear after mouseout
-                    // do not use previous transparency*
-                    // use the attribute to set the mode instead
 
-                    // edges - TODO - hiding edges not directly connected?                    
+                    edges.transition()
+                        .duration(500)
+                        .style("stroke-opacity", function (_d) {
+                            if (_d.source.index != centerNode && _d.target.index != centerNode) {
+                                //console.info("Center Node is" + centerNode);
+                                //console.info("Source Node is" + _d.source.index);
+                                //console.info("Target Node is" + _d.target.index);
+                                return 0.0;
+                            } else {
+                                return 1.0;
+                            }
+                        });
+
+
                 } else {
                     // if the link exists
                     d3.select(this)
