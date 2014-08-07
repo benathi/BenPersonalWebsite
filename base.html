@@ -274,9 +274,7 @@
                             }
                         })
                         .attr("r", function (d) {
-                            if (d.index == previous_centerNode) {
-                                return radius;
-                            } else if(d.index == centerNode){
+                            if(d.index == centerNode){
                                 return centerRadius;
                             } else {
                                 return radius;   
@@ -357,7 +355,7 @@
                     return "translate(" + d.x + "," + d.y + ")";
                 });
 
-            nodes.each(collide(0.2));
+            nodes.each(collide(0.3));
 
 
         });
