@@ -22,12 +22,14 @@
         var padding = 20;
         var radius = 50;
         var centerRadius = 80;
+        var radius_parent = 20;
          //var centerNode = "Ben Athiwaratkun";
         var centerNode = 0;
         var transparency_normal = 0.7;
-        var transparency_hover_factor = 0.5;
+        var transparency_hover_factor = 0.4;
         var transparency_defocused = 0.0;
-        
+        var transparency_parent = 1.0;
+
 
         var tree = {
             name: "Ben Athiwaratkun",
@@ -135,13 +137,15 @@
                     name: _name,
                     index: index_count,
                     link: _link,
-                    parent: parent
+                    parent: parent,
+                    mode: "normal"
                 })
             } else { // if it has no link
                 dataset.nodes.push({
                     name: _name,
                     index: index_count,
-                    parent: parent
+                    parent: parent,
+                    mode: "normal"
                 })
             }
 
@@ -246,18 +250,27 @@
             })
             .style("fill-opacity", 0.5)
             .on("mouseover", function (d) {
-                var cur_transp = d3.select(this).style("fill-opacity");
-                d.previous_transparency = cur_transp;
-                var new_transp = cur_transp*transparency_hover_factor;
-                console.info("The current transparency is" + d3.select(this).style("fill-opacity"));
-                console.info("The new transparency is" + new_transp);
                 d3.select(this)
-                    .style("fill-opacity", new_transp ); 
-                
-                
+                    .style("fill-opacity", function (_d) {
+                        if (_d.mode == "hide") {
+                            return transparency_defocused;
+                        } else {
+                            // parent mode or normal mode  
+                            var cur_transp = d3.select(this).style("fill-opacity");
+                            return cur_transp * transparency_hover_factor;
+                        }
+                    });
             })
             .on("mouseout", function (d) {
-                d3.select(this).style("fill-opacity", d.previous_transparency)
+                d3.select(this).style("fill-opacity", function (_d) {
+                    if (_d.mode == "hide") {
+                        return transparency_defocused;
+                    } else if (_d.mode == "parent") {
+                        return transparency_parent;
+                    } else if (_d.mode == "normal") {
+                        return transparency_normal;
+                    }
+                })
             })
             .on("click", function (d) {
                 var _link_exist = (typeof (d.link) != "undefined");
@@ -270,38 +283,49 @@
                     var previous_centerNode = centerNode;
                     centerNode = d.index;
 
-                    
+
                     nodes
                         .selectAll("circle")
                         .transition()
                         .duration(500)
-                        .style("fill-opacity", function (d) {
-                            if (d.parent != centerNode &&
-                                d.index != centerNode) {
-                                return transparency_defocused;
-                            } else {
+                        .style("fill-opacity", function (_d) {
+                            if (_d.index == centerNode || _d.parent == centerNode) {
+                                _d.hide = false;
                                 return transparency_normal;
+                            } else if (_d.index == d.parent) {
+                                _d.hide = false;
+                                return transparency_parent;
+                            } else {
+                                _d.hide = true;
+                                return transparency_defocused;
                             }
                         })
-                        .attr("r", function (d) {
-                            if(d.index == centerNode){
+                        .attr("r", function (_d) {
+                            if (_d.index == centerNode) {
                                 return centerRadius;
+                            } else if (_d.index == d.parent) {
+                                return radius_parent;
                             } else {
-                                return radius;   
+                                return radius;
                             }
                         })
 
                     nodes.selectAll("text")
-                    .transition()
-                    .duration(500)
-                    .style("fill-opacity", function(d){
-                        if(d.parent != centerNode && d.index !=centerNode){
-                            return transparency_defocused;   
-                        } else {
-                            return transparency_normal;
-                        }
-                    });
-                    
+                        .transition()
+                        .duration(500)
+                        .style("fill-opacity", function (d) {
+                            if (d.parent != centerNode && d.index != centerNode) {
+                                return transparency_defocused;
+                            } else {
+                                return transparency_normal;
+                            }
+                        });
+
+                    // TODO - issue: center node disappear after mouseout
+                    // do not use previous transparency*
+                    // use the attribute to set the mode instead
+
+                    // edges - TODO - hiding edges not directly connected?                    
                 } else {
                     // if the link exists
                     d3.select(this)
