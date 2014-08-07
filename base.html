@@ -256,30 +256,32 @@
 
                 if (!_link_exist) {
                     // if the link does not exist
-                    
-                    
+
                     var previous_centerNode = centerNode;
                     centerNode = d.index;
+
 
                     nodes
                         .selectAll("circle")
                         .transition()
-                        .duration(1000)
-                        .style("fill-opacity", function(d){
-                            if(d.parent != centerNode &&
-                              d.index != centerNode){
-                                return 0.0;   
+                        .duration(500)
+                        .style("fill-opacity", function (d) {
+                            if (d.parent != centerNode &&
+                                d.index != centerNode) {
+                                return 0.0;
                             } else {
-                                return 0.3;   
+                                return 0.3;
                             }
                         })
-                        .attr("r", function(d){
-                            if(d.index == previous_centerNode){
-                                return radius;   
-                            } else if (d.index == centerNode){
+                        .attr("r", function (d) {
+                            if (d.index == previous_centerNode) {
+                                return radius;
+                            } else if(d.index == centerNode){
                                 return centerRadius;
+                            } else {
+                                return radius;   
                             }
-                        });
+                        })
 
                 } else {
                     // if the link exists
