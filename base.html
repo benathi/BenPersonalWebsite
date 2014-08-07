@@ -19,11 +19,15 @@
         //Width and height
         var w = 960;
         var h = 600;
-        var padding = 5;
+        var padding = 20;
         var radius = 50;
-        var centerRadius = 60;
+        var centerRadius = 80;
          //var centerNode = "Ben Athiwaratkun";
         var centerNode = 0;
+        var transparency_normal = 0.7;
+        var transparency_hover_factor = 0.5;
+        var transparency_defocused = 0.0;
+        
 
         var tree = {
             name: "Ben Athiwaratkun",
@@ -241,12 +245,19 @@
                 return colors(i);
             })
             .style("fill-opacity", 0.5)
-            .on("mouseover", function () {
+            .on("mouseover", function (d) {
+                var cur_transp = d3.select(this).style("fill-opacity");
+                d.previous_transparency = cur_transp;
+                var new_transp = cur_transp*transparency_hover_factor;
+                console.info("The current transparency is" + d3.select(this).style("fill-opacity"));
+                console.info("The new transparency is" + new_transp);
                 d3.select(this)
-                    .style("fill-opacity", 0.7);
+                    .style("fill-opacity", new_transp ); 
+                
+                
             })
-            .on("mouseout", function () {
-                d3.select(this).style("fill-opacity", 0.3)
+            .on("mouseout", function (d) {
+                d3.select(this).style("fill-opacity", d.previous_transparency)
             })
             .on("click", function (d) {
                 // d is the data
@@ -268,9 +279,9 @@
                         .style("fill-opacity", function (d) {
                             if (d.parent != centerNode &&
                                 d.index != centerNode) {
-                                return 0.0;
+                                return transparency_defocused;
                             } else {
-                                return 0.3;
+                                return transparency_normal;
                             }
                         })
                         .attr("r", function (d) {
