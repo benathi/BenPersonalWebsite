@@ -25,7 +25,147 @@
         var centerNode = "Ben Athiwaratkun";
          // TODO - Original source should be a json graph
          // Then, derive the dataset for nodes and edges from the nested graph
-        var dataset = {
+
+        /*************/
+
+        var tree = {
+            name: "Ben Athiwaratkun",
+            subtree: [
+                {
+                    name: "Profile",
+                    subtree: [{
+                            name: "Bio",
+                            link: ""
+                },
+                        {
+                            name: "Resume",
+                            link: "files/resumeBenAthiwaratkun.pdf"
+                },
+                        {
+                            name: "LinkedIn",
+                            link: "https://www.linkedin.com/in/benathi"
+                },
+                        {
+                            name: "GitHub",
+                            link: "https://www.github.com/benathi"
+                }]
+     }, {
+                    name: "Machine Learning",
+                    subtree: [{
+                        name: "Private Projects",
+                        subtree: [{
+                                name: "Books Ratings",
+                                link: ""
+                },
+                            {
+                                name: "Movie Revenue Prediction",
+                                link: ""
+                },
+                            {
+                                name: "Malware Detection",
+                                link: ""
+                },
+                            {
+                                name: "Swingy Monkey with Q-Learning",
+                                link: ""
+                },
+                            {
+                                name: "Pacman Tournament",
+                                link: ""
+                }
+                     ]
+            }, {
+                        name: "Public Projects",
+                        subtree: [{
+                                name: "Higgs Boson",
+                                link: ""
+                    },
+                            {
+                                name: "Display Advertising Challenge",
+                                link: ""
+                    },
+                            {
+                                name: "Digit Recognition",
+                                link: ""
+                    }
+                         ]
+            }]
+     }, {
+                    name: "Technical Toolboxes",
+                    subtree: [{
+                        name: "Vim",
+                        link: ""
+            }, {
+                        name: ".gitignore",
+                        link: ""
+            }]
+     }, {
+                    name: "Data Science",
+                    subtree: [{
+                        name: "Hadoop with EC2",
+                        link: ""
+            }]
+     }, {
+
+     }
+
+          ]
+        };
+
+        var tree_derived = {
+            nodes: [],
+            edges: []
+        };
+        index_count = -1;
+        
+        function f(data) {
+            aux(-1, data)
+        }
+
+        function aux(parent, data) {
+            index_count += 1;
+            // 1. creating nodes
+            var _name = data.name;
+            var _link = data.link;
+            // expecting the link to be undefined
+            // add code to handle if this is not the case
+            if (typeof (_link) != "undefined") {
+                tree_derived.nodes.push({
+                    name: _name,
+                    index: index_count,
+                    link: _link
+                })
+            } else { // if it has no link
+                tree_derived.nodes.push({
+                    name: _name,
+                    index: index_count
+                })
+            }
+
+            // 2. creating edges
+            if (parent >= 0) {
+                tree_derived.edges.push({
+                    source: parent,
+                    target: index_count,
+                    direct: 1
+                })
+            }
+
+            var current_index = index_count;
+            if (typeof (data.subtree) != "undefined") {
+                for (var i = 1; i <= data.subtree.length; i++) {
+                    aux(current_index, data.subtree[i-1]);
+                }
+            }
+            return;
+        }
+
+        f(tree)
+
+
+        /*****************/
+/*
+         var dataset = {
             nodes: [
                 {
                     name: "Ben Athiwaratkun"
@@ -132,7 +272,11 @@
                     direct: 1
                 }]
         };
-
+*/
+        var dataset = tree_derived;
+        console.info(dataset)
+        
+        
         var force = d3.layout.force()
             .nodes(dataset.nodes) // add nodes to the force layout
             .links(dataset.edges) // add edges to the force layout
@@ -140,7 +284,7 @@
             .linkDistance(100) // Fix distance
             .charge(-500)
             .linkStrength(0.8) //0.8
-            .gravity(0) // 0.25
+            .gravity(0.01) // 0.25
             // gravity might not be variable
             .start();
 
@@ -218,13 +362,13 @@
                 d3.select(this).style("fill-opacity", 0.3)
             })
             .on("click", function (d) {
-                var _link_exist = typeof (d.link) != "undefined";
+                var _link_exist = (typeof (d.link) != "undefined");
                 console.info(_link_exist);
                 var _link = d.link
 
                 if (!_link_exist) {
                     // if the link does not exist
-                    
+
                 } else {
                     // if the link exists
                     d3.select(this)
