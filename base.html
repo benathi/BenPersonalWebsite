@@ -23,10 +23,7 @@
         var radius = 50;
         var centerRadius = 60;
         var centerNode = "Ben Athiwaratkun";
-         // TODO - Original source should be a json graph
-         // Then, derive the dataset for nodes and edges from the nested graph
 
-        /*************/
 
         var tree = {
             name: "Ben Athiwaratkun",
@@ -112,13 +109,12 @@
           ]
         };
 
-        var tree_derived = {
+        var dataset = {
             nodes: [],
             edges: []
         };
         index_count = -1;
-        
-        function f(data) {
+        function generateDataset(data) {
             aux(-1, data)
         }
 
@@ -130,13 +126,13 @@
             // expecting the link to be undefined
             // add code to handle if this is not the case
             if (typeof (_link) != "undefined") {
-                tree_derived.nodes.push({
+                dataset.nodes.push({
                     name: _name,
                     index: index_count,
                     link: _link
                 })
             } else { // if it has no link
-                tree_derived.nodes.push({
+                dataset.nodes.push({
                     name: _name,
                     index: index_count
                 })
@@ -144,7 +140,7 @@
 
             // 2. creating edges
             if (parent >= 0) {
-                tree_derived.edges.push({
+                dataset.edges.push({
                     source: parent,
                     target: index_count,
                     direct: 1
@@ -160,123 +156,10 @@
             return;
         }
 
-        f(tree)
-
-
-        /*****************/
-/*
-         var dataset = {
-            nodes: [
-                {
-                    name: "Ben Athiwaratkun"
-                },
-                {
-                    name: "Profile"
-                },
-                {
-                    name: "Kaggle Projects"
-                },
-                {
-                    name: "Ben's Github",
-                    link: "https://github.com/benathi"
-                },
-                {
-                    name: "Higgs Boson"
-                },
-                {
-                    name: "Reinforcement Learning"
-                },
-                {
-                    name: "Book Recommendation System"
-                },
-                {
-                    name: "Neural \nNetworks"
-                },
-                {
-                    name: "WebGL"
-                },
-                {
-                    name: "Predicting Malware"
-                },
-                {
-                    name: "Pacman - Q Learning"
-                },
-                {
-                    name: "Technical Toolbox",
-                    link: "https://github.com/benathi/MyVimrc"
-                },
-                {
-                    name: "Display Advertising Challenge",
-                    link: "https://github.com/benathi/Kaggle-DisplayAdvertisingChallenge"
-                }
-    ],
-            edges: [
-                {
-                    source: 0,
-                    target: 1,
-                    direct: 1
-                },
-                {
-                    source: 0,
-                    target: 2,
-                    direct: 1
-                },
-                {
-                    source: 0,
-                    target: 3,
-                    direct: 1
-                },
-                {
-                    source: 1,
-                    target: 4,
-                    direct: 1
-                },
-                {
-                    source: 1,
-                    target: 5,
-                    direct: 1
-                },
-                {
-                    source: 2,
-                    target: 6,
-                    direct: 1
-                },
-                {
-                    source: 2,
-                    target: 7,
-                    direct: 1
-                },
-                {
-                    source: 2,
-                    target: 8,
-                    direct: 1
-                },
-                {
-                    source: 3,
-                    target: 9,
-                    direct: 1
-                },
-                {
-                    source: 3,
-                    target: 10,
-                    direct: 1
-                },
-                {
-                    source: 3,
-                    target: 11,
-                    direct: 1
-                },
-                {
-                    source: 3,
-                    target: 12,
-                    direct: 1
-                }]
-        };
-*/
-        var dataset = tree_derived;
-        console.info(dataset)
         
+
         
+        generateDataset(tree);
         var force = d3.layout.force()
             .nodes(dataset.nodes) // add nodes to the force layout
             .links(dataset.edges) // add edges to the force layout
@@ -284,7 +167,7 @@
             .linkDistance(100) // Fix distance
             .charge(-500)
             .linkStrength(0.8) //0.8
-            .gravity(0.01) // 0.25
+            .gravity(0.02) // 0.25
             // gravity might not be variable
             .start();
 
