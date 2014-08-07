@@ -25,6 +25,94 @@
         var centerNode = "Ben Athiwaratkun";
          // TODO - Original source should be a json graph
          // Then, derive the dataset for nodes and edges from the nested graph
+
+        /*************/
+
+        var tree = {
+            name: "Ben Athiwaratkun",
+            subtree: [
+                {
+                    name: "Profile",
+                    subtree: [{
+                            name: "Bio",
+                            link: ""
+                },
+                        {
+                            name: "Resume",
+                            link: "files/resumeBenAthiwaratkun.pdf"
+                },
+                        {
+                            name: "LinkedIn",
+                            link: "https://www.linkedin.com/in/benathi"
+                },
+                        {
+                            name: "GitHub",
+                            link: "https://www.github.com/benathi"
+                }]
+     }, {
+                    name: "Machine Learning",
+                    subtree: [{
+                        name: "Private Projects",
+                        subtree: [{
+                                name: "Books Ratings",
+                                link: ""
+                },
+                            {
+                                name: "Movie Revenue Prediction",
+                                link: ""
+                },
+                            {
+                                name: "Malware Detection",
+                                link: ""
+                },
+                            {
+                                name: "Swingy Monkey with Q-Learning",
+                                link: ""
+                },
+                            {
+                                name: "Pacman Tournament",
+                                link: ""
+                }
+                     ]
+            }, {
+                        name: "Public Projects",
+                        subtree: [{
+                                name: "Higgs Boson",
+                                link: ""
+                    },
+                            {
+                                name: "Display Advertising Challenge",
+                                link: ""
+                    },
+                            {
+                                name: "Digit Recognition",
+                                link: ""
+                    }
+                         ]
+            }]
+     }, {
+                    name: "Technical Toolboxes",
+                    subtree: [{
+                        name: "Vim",
+                        link: ""
+            }, {
+                        name: ".gitignore",
+                        link: ""
+            }]
+     }, {
+                    name: "Data Science",
+                    subtree: [{
+                        name: "Hadoop with EC2",
+                        link: ""
+            }]
+     }, {
+
+     }
+
+          ]
+        }
+        /*****************/
+        
         var dataset = {
             nodes: [
                 {
@@ -224,7 +312,7 @@
 
                 if (!_link_exist) {
                     // if the link does not exist
-                    
+
                 } else {
                     // if the link exists
                     d3.select(this)
