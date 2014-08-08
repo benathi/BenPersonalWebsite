@@ -336,6 +336,9 @@
 
                 } else {
                     // if the link exists
+                    // TODO - disable the ability to click faded circles
+                    // TODO - get rid of skeletons after loading to a new page
+                    // TODO - when a user navigates to a new page and click back, can we force the page to be reloaded?
                     d3.select(this)
                         .transition()
                         .duration(w * 0.6)
@@ -398,7 +401,7 @@
             dataset.nodes.forEach(function (d, i) {
                 if (d.index == centerNode) {
                     d.x += alpha * (w / 2 - d.x);
-                    d.y += alpha * (w / 4 - d.y); // TODO - investigate why w/4
+                    d.y += alpha * (w / 4 - d.y);
                 }
             });
 
