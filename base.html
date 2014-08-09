@@ -21,14 +21,20 @@
         var h = 600;
         var radius = 50;
         var centerRadius = 120;
-        var padding = 20;
-        var radius_parent = 20;
+        var padding = 50;
+        var radius_parent = 15;
          //var centerNode = "Ben Athiwaratkun";
         var centerNode = 0;
         var transparency_normal = 0.7;
         var transparency_hover_factor = 0.4;
         var transparency_defocused = 0.03;
         var transparency_parent = 1.0;
+
+         // Force
+        var LINK_DISTANCE = 100;
+        var LINK_STRENGTH = 0.5;
+        var GRAVITY_STRENGTH = 0.05;
+        var CHARGE = -500;
 
 
         var tree = {
@@ -174,10 +180,10 @@
             .nodes(dataset.nodes) // add nodes to the force layout
             .links(dataset.edges) // add edges to the force layout
             .size([w, h]) // add size of the canvas to the force layout
-            .linkDistance(100) // Fix distance
-            .charge(-500)
-            .linkStrength(0.8) //0.8
-            .gravity(0.05) // 0.25
+            .linkDistance(LINK_DISTANCE) // Fix distance
+            .charge(CHARGE)
+            .linkStrength(LINK_STRENGTH) //0.8
+            .gravity(GRAVITY_STRENGTH) // 0.25
             // gravity might not be variable
             .start();
 
@@ -419,7 +425,7 @@
 
 
 
-
+         // TODO - make this work for non uniform radius
          // TODO - modify this so that it bounces off the walls
         function collide(alpha) {
             var quadtree = d3.geom.quadtree(dataset.nodes);
