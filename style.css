@@ -29,6 +29,9 @@ h2 a {
     position: absolute;
     width: 740px;
 }
+h3 {
+    margin-top: 2em;
+}
 .date {
     color: #aaa;
     margin-left: 1em;
