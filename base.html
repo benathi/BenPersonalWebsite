@@ -281,96 +281,100 @@
                 console.info(_link_exist);
                 var _link = d.link
 
-                if (!_link_exist) {
-                    // if the link does not exist, zoom in and defocus nodes that are not direct children
+                var defocused = (d.mode == "hide")
 
-                    var previous_centerNode = centerNode;
-                    centerNode = d.index;
+                if (!defocused) {
+                    if (!_link_exist) {
+                        // if the link does not exist, zoom in and defocus nodes that are not direct children
 
-
-                    nodes
-                        .selectAll("circle")
-                        .transition()
-                        .duration(500)
-                        .style("fill-opacity", function (_d) {
-                            if (_d.index == centerNode || _d.parent == centerNode) {
-                                _d.mode = "normal";
-                                return transparency_normal;
-                            } else if (_d.index == d.parent) {
-                                _d.mode = "parent";
-                                return transparency_parent;
-                            } else {
-                                _d.mode = "hide";
-                                return transparency_defocused;
-                            }
-                        })
-                        .attr("r", function (_d) {
-                            if (_d.index == centerNode) {
-                                return centerRadius;
-                            } else if (_d.index == d.parent) {
-                                return radius_parent;
-                            } else {
-                                return radius;
-                            }
-                        })
-
-                    nodes.selectAll("text")
-                        .transition()
-                        .duration(500)
-                        .style("fill-opacity", function (_d) {
-                            if (_d.parent != centerNode && _d.index != centerNode) {
-                                return transparency_defocused;
-                            } else {
-                                return transparency_normal;
-                            }
-                        });
+                        var previous_centerNode = centerNode;
+                        centerNode = d.index;
 
 
-                    edges.transition()
-                        .duration(500)
-                        .style("stroke-opacity", function (_d) {
-                            if (_d.source.index != centerNode && _d.target.index != centerNode) {
-                                //console.info("Center Node is" + centerNode);
-                                //console.info("Source Node is" + _d.source.index);
-                                //console.info("Target Node is" + _d.target.index);
-                                return transparency_defocused;
-                            } else {
-                                return 1.0;
-                            }
-                        });
+                        nodes
+                            .selectAll("circle")
+                            .transition()
+                            .duration(500)
+                            .style("fill-opacity", function (_d) {
+                                if (_d.index == centerNode || _d.parent == centerNode) {
+                                    _d.mode = "normal";
+                                    return transparency_normal;
+                                } else if (_d.index == d.parent) {
+                                    _d.mode = "parent";
+                                    return transparency_parent;
+                                } else {
+                                    _d.mode = "hide";
+                                    return transparency_defocused;
+                                }
+                            })
+                            .attr("r", function (_d) {
+                                if (_d.index == centerNode) {
+                                    return centerRadius;
+                                } else if (_d.index == d.parent) {
+                                    return radius_parent;
+                                } else {
+                                    return radius;
+                                }
+                            })
+
+                        nodes.selectAll("text")
+                            .transition()
+                            .duration(500)
+                            .style("fill-opacity", function (_d) {
+                                if (_d.parent != centerNode && _d.index != centerNode) {
+                                    return transparency_defocused;
+                                } else {
+                                    return transparency_normal;
+                                }
+                            });
 
 
-                } else {
-                    // if the link exists
-                    // TODO - disable the ability to click faded circles
-                    // TODO - get rid of skeletons after loading to a new page
-                    // TODO - when a user navigates to a new page and click back, can we force the page to be reloaded?
-                    d3.select(this)
-                        .transition()
-                        .duration(w * 0.6)
-                        .attr("r", w * 0.6)
-                        .style("fill-opacity", 0.0)
-                        .remove()
-                        .call(endall, function (d) {
+                        edges.transition()
+                            .duration(500)
+                            .style("stroke-opacity", function (_d) {
+                                if (_d.source.index != centerNode && _d.target.index != centerNode) {
+                                    //console.info("Center Node is" + centerNode);
+                                    //console.info("Source Node is" + _d.source.index);
+                                    //console.info("Target Node is" + _d.target.index);
+                                    return transparency_defocused;
+                                } else {
+                                    return 1.0;
+                                }
+                            });
 
 
-                            // want to select all the elements and fade them away
-                            svg.selectAll("circle")
-                                .transition()
-                                .duration(0.4 * w)
-                                .delay(function (d, i) {
-                                    return i * 20;
-                                })
-                                .attr("r", 0.4 * w)
-                                .style("fill-opacity", 0.0)
-                                .remove()
-                                .call(endall, function () {
-                                    // Load a new page (in a parent frame or current window) when everything is done
+                    } else {
+                        // if the link exists
+                        // TODO - disable the ability to click faded circles
+                        // TODO - get rid of skeletons after loading to a new page
+                        // TODO - when a user navigates to a new page and click back, can we force the page to be reloaded?
+                        d3.select(this)
+                            .transition()
+                            .duration(w * 0.6)
+                            .attr("r", w * 0.6)
+                            .style("fill-opacity", 0.0)
+                            .remove()
+                            .call(endall, function (d) {
 
-                                    top.window.location.href = _link;
 
-                                })
-                        });
+                                // want to select all the elements and fade them away
+                                svg.selectAll("circle")
+                                    .transition()
+                                    .duration(0.4 * w)
+                                    .delay(function (d, i) {
+                                        return i * 20;
+                                    })
+                                    .attr("r", 0.4 * w)
+                                    .style("fill-opacity", 0.0)
+                                    .remove()
+                                    .call(endall, function () {
+                                        // Load a new page (in a parent frame or current window) when everything is done
+
+                                        top.window.location.href = _link;
+
+                                    })
+                            });
+                    }
                 }
             })
 
