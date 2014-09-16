@@ -18,16 +18,16 @@
     <script type="text/javascript">
         //Width and height
         var w = 960;
-        var h = 600;
+        var h = 700;
         var radius = 50;
         var centerRadius = 120;
         var padding = 50;
-        var radius_parent = 15;
+        var radius_parent = 25;
          //var centerNode = "Ben Athiwaratkun";
         var centerNode = 0;
         var transparency_normal = 0.7;
         var transparency_hover_factor = 0.4;
-        var transparency_defocused = 0.03;
+        var transparency_defocused = 0.1;
         var transparency_parent = 1.0;
 
          // Force
@@ -61,10 +61,10 @@
                             link: "https://www.github.com/benathi"
                 }]
      }, {
-                    name: "Machine Learning",
+                    name: "Machine Learning Projects",
                     subtree: [
                         {
-                            name: "Recommendation System",
+                            name: "Book Recommendation System",
                             subtree: [
                                 {
                                     name: "Project Write-Up",
@@ -127,7 +127,7 @@
                             name: "Higgs Boson",
                             subtree: [
                                 {
-                                name: "Code on Git",
+                                name: "Code",
                                     link: "https://github.com/benathi/HiggsBoson"
                                 }
                             ]
@@ -177,13 +177,13 @@
                     
                     ]
      }
-                , {
+               /* , {
                     name: "Technical Toolboxes",
                     subtree: [{
                         name: "Vim",
                         link: "https://github.com/benathi/MyVimrc"
             }]
-     }
+     }*/
 
           ]
         };
@@ -279,7 +279,7 @@
             .enter()
             .append("line")
             .style("stroke", "#eee")
-            .style("stroke-width", 1);
+            .style("stroke-width", 0);
 
 
         function endall(transition, callback) {
@@ -321,7 +321,22 @@
             .style("fill", function (d, i) {
                 return colors(i);
             })
-            .style("fill-opacity", 0.5)
+            /*.attr("mode", function(d,i){
+                if (d.index == centerNode){
+                    return  "normal";
+                } else {
+                    return "hide";   
+                }
+            })*/
+            .style("fill-opacity", function(d){
+                if (d.index == centerNode){
+                    d.mode = "normal"
+                    return transparency_normal;   
+                } else {
+                    d.mode = "hide"
+                    return transparency_normal;
+                }
+            })
             .on("mouseover", function (d) {
                 d3.select(this)
                     .style("fill-opacity", function (_d) {
@@ -456,6 +471,13 @@
             .style("font-size", 13)
             .attr("fill", function (d, i) {
                 return d3.rgb(colors(i)).darker(2);
+            })
+            .style("fill-opacity", function(d){
+                if (d.index == centerNode){
+                    return transparency_normal;   
+                } else {
+                    return transparency_defocused;
+                }
             })
 
 
